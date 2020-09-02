@@ -11,3 +11,5 @@ Dados encontrados nos seguintes sites:
 - Bag of Words
 - Mean/Sum of embeddings
 - RNN with transfer learning
+
+Detalhes no relatório em pdf.
