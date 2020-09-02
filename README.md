@@ -3,6 +3,11 @@ IMBb sentiment classification
 
 Trabalho gerado no trabalho de TCC na pós graduação de Big Data e Ciência de Dados da PUC-Minas
 
-Detalhes do trabalho podem ser encontrados no arquivo TCC em formato pdf.
+Dados encontrados nos seguintes sites:
+- https://ai.stanford.edu/~amaas/data/sentiment/
+- https://www.imdb.com/interfaces/
 
-Os arquivos estão separados para facilitar entendimento, como se segue:
+3 Modelos Gerados:
+- Bag of Words
+- Sum of embeddings
+- RNN with transfer learning
