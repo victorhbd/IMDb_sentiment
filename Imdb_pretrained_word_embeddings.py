@@ -49,7 +49,7 @@ df_test['text'] = df_test['text'].apply(lambda x: [item for item in x.split() if
 # wv_vector_train = df_train['text'].apply(embeddings.word_average)
 # wv_vector_test = df_test['text'].apply(embeddings.word_average)
 wv_vector_train = df_train['text'].apply(embeddings.word_sum)
-wv_vector_test = df_train['text'].apply(embeddings.word_sum)
+wv_vector_test = df_test['text'].apply(embeddings.word_sum)
 
 wv_vector_train = np.vstack(wv_vector_train)
 wv_vector_test = np.vstack(wv_vector_test)
@@ -101,42 +101,15 @@ results_vector = results_vector.append({'params':params, 'cv':CV, 'type':'mean_t
                           'test_acc':test_acc, 'test_roc':test_roc, 'test_f1':test_f1}, ignore_index=True)
 results_vector.to_csv('./results_vector.csv')
 
-#%% resultado do que o modelo tem muita certeza
-        
-result_test = pd.DataFrame()
-result_test['pred'] = preds_test
-result_test['target'] = y_test
-
-result_test.loc[result_test.pred > 0.9].hist()
-result_test.loc[result_test.pred < 0.1].hist()
-
-print(len(result_test.loc[(result_test.pred > 0.9) & (result_test.target==1)])/len(result_test.loc[(result_test.pred > 0.9)]))
-print(len(result_test.loc[(result_test.pred < 0.1) & (result_test.target==0)])/len(result_test.loc[(result_test.pred < 0.1)]))
-
-#%% exemplo de erro com alta certeza - predição positiva
-result_test.loc[(result_test.pred > 0.9) & (result_test.target==0)]
-index = 15290
-df_test.iloc[index]['text']
-print(' '.join(df_test.iloc[index]['text']))
-print(preds_test[index])
-print(y_test[index])
-
-#%% exemplo de erro com alta certeza - predição negativa
-result_test.loc[(result_test.pred < 0.1) & (result_test.target==1)]
-index = 7716
-print(' '.join(df_test.iloc[index]['text']))
-print(preds_test[index])
-print(y_test[index])
-
 #%%
 # https://wikipedia2vec.github.io/wikipedia2vec/pretrained/
 # https://nlp.stanford.edu/projects/glove/
 # https://fasttext.cc/docs/en/english-vectors.html
 
 mypath= '../../wordEmbeddings/English/'
-emb = 'glove.42B.300d.txt'#'enwiki_20180420_300d.txt' #'glove.42B.300d.txt' #'crawl-300d-2M.vec'
+emb = 'crawl-300d-2M.vec'#'enwiki_20180420_300d.txt' #'glove.42B.300d.txt' #'crawl-300d-2M.vec'
 
-embeddings = CalcEmbeddingVectorizer(mypath+emb, df_train['text'], glove=True)
+embeddings = CalcEmbeddingVectorizer(mypath+emb, df_train['text'], glove=False)
 
 wv_vector_train = df_train['text'].apply(embeddings.word_average)
 wv_vector_test = df_test['text'].apply(embeddings.word_average)
@@ -189,3 +162,30 @@ results_vector = results_vector.append({'params':params, 'cv':CV, 'type':'mean',
                           'cv_binary_loss':cv_binary_loss, 'embedding': emb,
                           'test_acc':test_acc, 'test_roc':test_roc, 'test_f1':test_f1}, ignore_index=True)
 results_vector.to_csv('./results_vector.csv')
+
+#%% resultado do que o modelo tem muita certeza
+        
+result_test = pd.DataFrame()
+result_test['pred'] = preds_test
+result_test['target'] = y_test
+
+result_test.loc[result_test.pred > 0.9].hist()
+result_test.loc[result_test.pred < 0.1].hist()
+
+print(len(result_test.loc[(result_test.pred > 0.9) & (result_test.target==1)])/len(result_test.loc[(result_test.pred > 0.9)]))
+print(len(result_test.loc[(result_test.pred < 0.1) & (result_test.target==0)])/len(result_test.loc[(result_test.pred < 0.1)]))
+
+#%% exemplo de erro com alta certeza - predição positiva
+result_test.loc[(result_test.pred > 0.9) & (result_test.target==0)]
+index = 24843
+df_test.iloc[index]['text']
+print(' '.join(df_test.iloc[index]['text']))
+print(preds_test[index])
+print(y_test[index])
+
+#%% exemplo de erro com alta certeza - predição negativa
+result_test.loc[(result_test.pred < 0.1) & (result_test.target==1)]
+index = 81
+print(' '.join(df_test.iloc[index]['text']))
+print(preds_test[index])
+print(y_test[index])
