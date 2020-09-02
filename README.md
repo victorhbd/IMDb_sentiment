@@ -9,5 +9,5 @@ Dados encontrados nos seguintes sites:
 
 3 Modelos Gerados:
 - Bag of Words
-- Sum of embeddings
+- Mean/Sum of embeddings
 - RNN with transfer learning
